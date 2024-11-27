@@ -6,15 +6,14 @@ apt update && apt upgrade -y
 
 # Instalación de paquetes requeridos
 echo "Instalando paquetes necesarios..."
-apt install -y apt-transport-https ca-certificates curl software-properties-common gnupg2
+apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
 
 # Agregar la clave de GPG para Kubernetes
 echo "Agregando clave de GPG de Kubernetes..."
-curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
-# Agregar el repositorio de Kubernetes
-echo "Agregando repositorio de Kubernetes..."
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+# Agregar repositorio al Sourcelist
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 # Actualizar la lista de paquetes
 echo "Actualizando lista de paquetes..."
